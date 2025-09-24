@@ -1,0 +1,43 @@
+novelai_token: []
+use_token: 0
+model: nai-diffusion-4-full
+proxy:
+  enable: false
+  host: 127.0.0.1
+  port: 7890
+reverse_proxy:
+  base_url: https://image.novelai.net
+  user_url: https://api.novelai.net
+translate:
+  engine: null
+  openai:
+    base_url: https://api.deerapi.com
+    model: gpt-4o-mini
+    apikey: null
+  baidu:
+    appid: null
+    appkey: null
+nsfw_check:
+  engine: null
+  api4ai:
+    nsfw_threshold: 0.8
+  tencent:
+    SecretId: null
+    SecretKey: null
+    Bucket: null
+    Region: null
+    BizType: null
+free_mode: true
+forward_msg: false
+parameters:
+  width: 832
+  height: 1216
+  scale: 6
+  sampler: k_euler_ancestral
+  steps: 23
+  cfg_rescale: 0
+  noise_schedule: karras
+  negative_prompt: nsfw, lowres, {bad}, error, fewer, extra, missing, worst
+    quality, jpeg artifacts, bad quality, watermark, unfinished, displeasing,
+    chromatic aberration, signature, extra digits, artistic error, username,
+    scan, [abstract]
