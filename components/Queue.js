@@ -84,7 +84,22 @@ class QueueList {
                     logger.mark(logger.blue('[NAI PLUGIN]'), logger.cyan(`Token ${index + 1} 验证成功，状态码: ${response.status}`));
                     
                     const { active, trainingStepsLeft: { fixedTrainingStepsLeft, purchasedTrainingSteps } } = response.data.subscription;
-                    return (active || purchasedTrainingSteps > 0 || fixedTrainingStepsLeft > 0) ? new TaskQueue(token) : null;
+                    
+                    // 详细的订阅信息日志
+                    logger.mark(logger.blue('[NAI PLUGIN]'), logger.cyan(`Token ${index + 1} 订阅状态详情:`));
+                    logger.mark(logger.blue('[NAI PLUGIN]'), logger.cyan(`- 激活状态: ${active}`));
+                    logger.mark(logger.blue('[NAI PLUGIN]'), logger.cyan(`- 固定剩余点数: ${fixedTrainingStepsLeft}`));
+                    logger.mark(logger.blue('[NAI PLUGIN]'), logger.cyan(`- 购买的点数: ${purchasedTrainingSteps}`));
+                    
+                    const isAvailable = (active || purchasedTrainingSteps > 0 || fixedTrainingStepsLeft > 0);
+                    logger.mark(logger.blue('[NAI PLUGIN]'), logger.cyan(`Token ${index + 1} 是否可用: ${isAvailable}`));
+                    
+                    if (!isAvailable) {
+                        logger.mark(logger.blue('[NAI PLUGIN]'), logger.yellow(`Token ${index + 1} 不可用原因: 订阅未激活且无可用点数`));
+                        logger.mark(logger.blue('[NAI PLUGIN]'), logger.yellow(`建议: 请检查NovelAI订阅状态或账户余额`));
+                    }
+                    
+                    return isAvailable ? new TaskQueue(token) : null;
                 } catch (error) {
                     const tokenDisplay = `${token.substring(0, 8)}...${token.slice(-8)}`;
                     

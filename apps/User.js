@@ -76,6 +76,17 @@ export class User extends plugin {
           logger.mark(logger.blue('[NAI PLUGIN]'), logger.cyan(`Token ${index + 1} 验证成功，状态码: ${response.status}`))
           
           const { active, tier, expiresAt, trainingStepsLeft } = response.data.subscription
+          
+          // 详细的日志记录
+          logger.mark(logger.blue('[NAI PLUGIN]'), logger.cyan(`Token ${index + 1} 详细信息:`));
+          logger.mark(logger.blue('[NAI PLUGIN]'), logger.cyan(`- 激活状态: ${active}`));
+          logger.mark(logger.blue('[NAI PLUGIN]'), logger.cyan(`- 订阅挡位: ${tierMap[tier] || '未知'}`));
+          logger.mark(logger.blue('[NAI PLUGIN]'), logger.cyan(`- 固定剩余点数: ${trainingStepsLeft.fixedTrainingStepsLeft}`));
+          logger.mark(logger.blue('[NAI PLUGIN]'), logger.cyan(`- 购买的点数: ${trainingStepsLeft.purchasedTrainingSteps}`));
+          
+          const isTokenUsable = (active || trainingStepsLeft.purchasedTrainingSteps > 0 || trainingStepsLeft.fixedTrainingStepsLeft > 0);
+          logger.mark(logger.blue('[NAI PLUGIN]'), logger.cyan(`Token ${index + 1} 在Queue中是否被认为可用: ${isTokenUsable}`));
+          
           return [
             `┌ Token: ${token.substring(0, 8)}...${token.slice(-8)}`,
             '├ 订阅状态：' + (active ? '已订阅' : '未订阅'),
